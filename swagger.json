@@ -1,0 +1,264 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple Validation API to verify the playback capabilities based a rule set.",
+    "version": "1.0.0",
+    "title": "Swagger Playback",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "cyhueen17@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "playback.swagger.io",
+  "basePath": "/v2",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/validate": {
+      "post": {
+        "summary": "Deciding whether playback is allowed",
+        "description": "",
+        "operationId": "validate",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Object contains information regarding the Member, Device, and Viewable to determin if playback is allowed.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ValidationReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success operation",
+            "schema": {
+              "$ref": "#/definitions/ValidationRes"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "Resource not found"
+          }
+        },
+        "security": [
+          {
+            "playback_auth": [
+              "write:playback",
+              "read:playback"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "playback_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:playback": "Verify play back is allowed",
+        "read:playback": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "ValidationReq": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "device": {
+          "type": "string",
+          "enum": [
+            "mobile",
+            "tv",
+            "tablet",
+            "laptop"
+          ]
+        },
+        "viewableId": {
+          "type": "string"
+        },
+        "rulesToExclude": {
+          "type": "string",
+          "enum": [
+            "userstatus",
+            "allowedStream",
+            "allowedCountry",
+            "resolution"
+          ]
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "ValidationRes": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "device": {
+          "$ref": "#/definitions/Device"
+        },
+        "viewable": {
+          "$ref": "#/definitions/Viewable"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "approved",
+            "rejected"
+          ]
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "required": [
+        "usename",
+        "location"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "homeCountry": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "string",
+          "description": "User Status",
+          "enum": [
+            "active",
+            "inactive"
+          ]
+        },
+        "accountId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Device": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the decive",
+          "enum": [
+            "mobile",
+            "TV",
+            "tablet",
+            "laptop"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "basic",
+            "HD",
+            "UltraHD"
+          ]
+        }
+      }
+    },
+    "Viewable": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        },
+        "resolution": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "HD",
+              "UltraHD"
+            ]
+          }
+        },
+        "allowedCountries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
