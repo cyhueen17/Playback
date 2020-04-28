@@ -29,4 +29,13 @@ public class Viewable {
         }
     }
 
+    public String getTitle() { return title; }
+
+    public HashSet<Resolution> getResolutions() {
+        return resolutions;
+    }
+
+    public HashSet<String> getAllowedCountries() {
+        return allowedCountries;
+    }
 }

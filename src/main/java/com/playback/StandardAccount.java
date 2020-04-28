@@ -20,4 +20,8 @@ public class StandardAccount extends Account {
         return allowedResolutions;
     }
 
+    public int getStreamAllowed() {
+        return streamAllowed;
+    }
+
 }

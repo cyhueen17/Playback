@@ -19,4 +19,8 @@ public class BasicAccount extends Account {
         return allowedResolutions;
     }
 
+    public int getStreamAllowed() {
+        return streamAllowed;
+    }
+
 }

@@ -14,4 +14,6 @@ public abstract class Account {
 
     public abstract HashSet<Resolution> getAllowedResolutions();
 
+    public abstract int getStreamAllowed();
+
 }

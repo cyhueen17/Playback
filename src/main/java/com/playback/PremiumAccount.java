@@ -21,4 +21,8 @@ public class PremiumAccount extends Account {
         return allowedResolutions;
     }
 
+    public int getStreamAllowed() {
+        return streamAllowed;
+    }
+
 }
